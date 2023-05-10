@@ -1,0 +1,78 @@
+---
+title: "sharekhan"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{sharekhan}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ShareKhan)
+```
+
+ShareKhan API is a collection of HTTPS-REST APIs that provide integration with our in-house trading
+platform with which you can build your own customized trading applications.You can use the endpoints
+to :
+
+- Place, modify and cancel orders.
+- Query specific order details, as well query holdings, positions, reports.
+- Scrip Master which provides provides only active scrips for the day.
+- Historical data and Websocket streaming
+
+
+## Requirements
+
+The use of the API is based on authentication, using `api_key`,`login id`,`password`,`secret key` 
+
+## Workflow
+
+The workflow starts with the creation of a sharekhan connect object and completing a successful login flow. 
+To create a sharekhanconnect object the following may be used. 
+The login url then may be obtained using the `get_login_url` function.
+
+```r
+connect = create_connection_object(params)
+login_url = get_login_url(connect)
+print(login_url)
+```
+
+Navigating to this login url and completing a successful login will generate a `request_token`. 
+A successful login comes back with the `request_token` as a URL query parameter to the redirect URL registered on the 
+(LOGIN_URL) for that `api_key`.
+
+## API Handshake
+
+Once the `request_token` is available, the `set_request_token` function can be used to update the sharekhan connect object and then call the `fetch_access_token` to complete the API handshake and obtain an `access_token`. A successful handshake will set the `access_token` slot inside the sharekhan connect object and return the object itself. From this point onward the handshake is complete and the API functions are available to the user.
+
+```r
+connect = set_request_token(connect,request_token)
+connect = fetch_access_token(connect)
+```
+
+## Example of Use
+The following displays the call signatures for some useful functions.
+
+new_order_response <- place_order(connect, new_order_method_params)
+modify_response <- modify_order(connect, modify_method_params)
+cancel_response <- cancel_order(connect, cancel_method_params)
+report_day_response <- get_report_day(connect, report_method_params) (Orders History)
+trade_position_response <- get_trade_position(connect, trade_params) (Trades History)
+order_history_response <- get_report_history(connect, order_method_params) (Order History)
+report_trade_response <- get_report_trade(connect, report_method_params) (Trade History)
+holdings_response <- get_holdings(connect, holdings_params)
+master_response <- get_master(connect, master_params)
+historical_reaponse <- get_historical(connect, historical_method_params)
+
+`WebSocket`
+socketObject <- sharekhan_connect_object(params)
+sharekhanSocket.connect(socketObject)
+
+

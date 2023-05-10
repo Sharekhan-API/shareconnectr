@@ -1,0 +1,30 @@
+Package: ShareKhan
+Title: Connect to ShareKhan API
+Version: 1.0.0.9
+Authors@R: 
+    person("First", "Last", , "yourid@email.com")
+Description: R wrapper for Sharekhan API.
+    Sharekhan API is a collection of HTTP-Rest endpoints exposed to build trading platform. The
+    endpoints are used to place order, manages portfolio, get real time feed and more. All requests and
+    responses should be in JSON format. The status code used in response are standard HTTP status codes.
+    The successful login provides an access JWT token. This token should be used in all subsequent requests
+    to the API.
+License: 
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+R-Version:
+    R version 4.2.3
+Imports:
+    httr,
+    methods,
+    jsonlite,
+    glue,
+    base64,
+    reticulate,
+    websocket,
+    later
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
